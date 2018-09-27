@@ -37,7 +37,7 @@ module.exports = class {
     const spinner = ora('downloading...\n');
     spinner.start();
     try {
-      const cmd = `git clone https://gitee.com/zuoyanart/nodedepoly.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
+      const cmd = `git clone https://git.zuoyanit.com/zuoyanit/template-api.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
       await this.exec(cmd);
       spinner.succeed();
       console.log(logSymbols.success, chalk.green('Create project success. please run <npm i> in project directory.'));
