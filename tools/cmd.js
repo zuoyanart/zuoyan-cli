@@ -108,7 +108,7 @@ module.exports = class {
   /**
    * 配置服务器环境
    */
-  static async initServer(type = 'all') {
+  static async initServer(type = 'basic') {
     try {
       const sslStr = `curl  https://get.acme.sh | sh && alias acme.sh=~/.acme.sh/acme.sh`; //生成ssl
       const mysqlStr = `rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm && yum -y install mysql-community-server && systemctl enable mysqld && systemctl start mysqld && mysql_secure_installation && mysql -V`;
@@ -132,7 +132,7 @@ module.exports = class {
           await nks.render(path.resolve('./template/mongodb'), {}, path.resolve('/etc/yum.repos.d/mongodb.repo'));
           await this.exec(mongodbStr);
           break;
-        default:
+        case 'basic':
           await this.exec(sslStr);
           await this.exec(mysqlStr);
           await this.exec(nginxStr);

@@ -4,7 +4,7 @@ const program = require('commander');
 const cmd = require('./tools/cmd');
 
 program.version('1.0.0', '-v, --version')
-  .command('initApi <name>')
+  .command('template <name>')
   .action((name) => {
     cmd.initApi(name);
   });
@@ -19,7 +19,7 @@ program.command('depoly <name>')
 /**
  * 配置服务器环境
  */
-program.command('initServer <name>')
+program.command('install <name>')
   .action((name) => {
     cmd.initServer(name);
   });
