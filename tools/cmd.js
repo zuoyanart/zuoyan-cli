@@ -137,8 +137,6 @@ module.exports = class {
           await this.exec(mysqlStr);
           await this.exec(nginxStr);
           await this.exec(gitStr);
-          await nks.render(path.resolve('./template/mongodb'), {}, path.resolve('/etc/yum.repos.d/mongodb.repo'));
-          await this.exec(mongodbStr);
           break;
       }
     } catch (e) {
