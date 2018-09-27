@@ -28,7 +28,7 @@ module.exports = class {
    *  初始化api项目
    * @param {*} objName 
    */
-  static async initApi(objName) {
+  static async templateApi(objName) {
     if (fs.existsSync(objName)) {
       console.log(logSymbols.error, chalk.red('The project directory already exists!'));
       return;
@@ -108,7 +108,7 @@ module.exports = class {
   /**
    * 配置服务器环境
    */
-  static async initServer(type = 'basic') {
+  static async install(type = 'basic') {
     try {
       const sslStr = `curl  https://get.acme.sh | sh && alias acme.sh=~/.acme.sh/acme.sh`; //生成ssl
       const mysqlStr = `rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm && yum -y install mysql-community-server && systemctl enable mysqld && systemctl start mysqld && mysql_secure_installation && mysql -V`;
