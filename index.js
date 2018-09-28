@@ -3,7 +3,7 @@
 const program = require('commander');
 const cmd = require('./tools/cmd');
 
-program.version('1.0.5', '-v, --version')
+program.version('1.0.16', '-v, --version')
   .command('template <name>')
   .action((name) => {
     cmd.templateApi(name);
@@ -12,9 +12,23 @@ program.version('1.0.5', '-v, --version')
 /**
  * 部署git协议的项目
  */
-program.command('depoly <name>')
+program.command('depolyapp <name>')
   .action((name) => {
     cmd.depoly(name);
+  });
+/**
+ * 部署git协议的项目
+ */
+program.command('depolyh5 <name>')
+  .action((name) => {
+    cmd.depolyH5(name);
+  });
+/**
+ * 重新生成ssl证书
+ */
+program.command('ressl')
+  .action((name) => {
+    cmd.ressl(name);
   });
 /**
  * 配置服务器环境

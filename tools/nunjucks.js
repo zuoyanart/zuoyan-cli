@@ -10,7 +10,7 @@ module.exports = class {
    * @param {*} topath 
    */
   async render(tplFilePath, data, topath) {
-    const env = nunjucks.configure("./", {
+    const env = nunjucks.configure("/", {
       noCache: true,
       autoescape: false,
       trimBlocks: true,
