@@ -196,6 +196,7 @@ module.exports = class {
       const nginxStr = `yum -y install nginx && sudo systemctl enable nginx && sudo systemctl start nginx && nginx -v`;
       const gitStr = `yum -y install git && git --version`;
       const mongodbStr = `sudo yum makecache && sudo yum -y install mongodb-org &&sudo service mongod start &&sudo chkconfig mongod on`;
+      const redisStr = `yum -y install redis && service redis start && redis-cli --version`;
       const otherStr = `yum -y update gcc&&yum -y install gcc+ gcc-c++`; //c++
       switch (type) {
         case 'ssl':
@@ -213,6 +214,9 @@ module.exports = class {
         case 'mongodb':
           await nks.render(path.resolve('./template/mongodb'), {}, path.resolve('/etc/yum.repos.d/mongodb.repo'));
           await this.exec(mongodbStr);
+          break;
+        case 'redis':
+          await this.exec(redisStr);
           break;
         case 'basic':
           await this.exec(otherStr);
