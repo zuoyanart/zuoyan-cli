@@ -47,6 +47,28 @@ module.exports = class {
     }
   }
   /**
+   *  初始化api项目
+   * @param {*} objName 
+   */
+  static async templateCmsApi(objName) {
+    if (fs.existsSync(objName)) {
+      console.log(logSymbols.error, chalk.red('The project directory already exists!'));
+      return;
+    }
+    console.log(chalk.green('Start creating projects...'));
+    // const spinner = ora('downloading...\n');
+    // spinner.start();
+    try {
+      const cmd = `git clone https://git.zuoyanit.com/zuoyanit/template-cms.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
+      await this.exec(cmd);
+      // spinner.succeed();
+      console.log(logSymbols.success, chalk.green('Create project success. please run <npm i> in project directory.'));
+    } catch (e) {
+      // spinner.fail();
+      console.log(logSymbols.error, chalk.red(e.message));
+    }
+  }
+  /**
    * 部署
    */
   static async depoly(objName) {
