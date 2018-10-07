@@ -3,7 +3,7 @@
 const program = require('commander');
 const cmd = require('./tools/cmd');
 
-program.version('1.0.18', '-v, --version')
+program.version('1.0.20', '-v, --version')
   .command('template <name>')
   .action((name) => {
     cmd.templateApi(name);
@@ -35,8 +35,8 @@ program.command('depolyh5 <name>')
  * 重新生成ssl证书
  */
 program.command('ressl')
-  .action((name) => {
-    cmd.ressl(name);
+  .action(() => {
+    cmd.ressl();
   });
 /**
  * 配置服务器环境

@@ -201,7 +201,7 @@ module.exports = class {
         let cmdStr = `rm -rf /root/.acme.sh/${answers.domain} && nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  /home/autossl/ --nginx&&~/.acme.sh/acme.sh --installcert -d ${answers.domain} --keypath /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
         await this.exec(cmdStr);
         console.log(logSymbols.success, chalk.green('ssl directory:/home/ssl/' + answers.domain + '/'));
-        let cmdStr = `rm -if /etc/nginx/conf.d/${objName}.conf && nginx -s reload`;
+        cmdStr = `rm -if /etc/nginx/conf.d/${objName}.conf && nginx -s reload`;
         await this.exec(cmdStr);
       });
     } catch (e) {
