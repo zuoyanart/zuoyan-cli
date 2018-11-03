@@ -3,7 +3,7 @@
 const program = require('commander');
 const cmd = require('./tools/cmd');
 
-program.version('1.0.21', '-v, --version')
+program.version('1.0.25', '-v, --version')
   .command('template <name>')
   .action((name) => {
     cmd.templateApi(name);
@@ -45,6 +45,5 @@ program.command('install <name>')
   .action((name) => {
     cmd.install(name);
   });
-
 
 program.parse(process.argv);

@@ -1,8 +1,7 @@
 const shell = require('shelljs');
-const ora = require('ora');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
-const nunjucks = require('./nunjucks');
+const Nunjucks = require('./nunjucks');
 const fs = require('fs-extra');
 const path = require('path');
 const logSymbols = require('log-symbols');
@@ -10,7 +9,7 @@ const logSymbols = require('log-symbols');
 module.exports = class {
   static exec(cmdstr) {
     return new Promise((resolve, reject) => {
-      shell.exec(cmdstr, function (code, stdout, stderr) {
+      shell.exec(cmdstr, function(code, stdout, stderr) {
         // console.log('stderr', stderr);
         // console.log('stdout', stdout);
         if (stderr && false) {
@@ -26,7 +25,7 @@ module.exports = class {
   }
   /**
    *  初始化api项目
-   * @param {*} objName 
+   * @param {*} objName
    */
   static async templateApi(objName) {
     if (fs.existsSync(objName)) {
@@ -48,7 +47,7 @@ module.exports = class {
   }
   /**
    *  初始化api项目
-   * @param {*} objName 
+   * @param {*} objName
    */
   static async templateCmsApi(objName) {
     if (fs.existsSync(objName)) {
@@ -85,12 +84,11 @@ module.exports = class {
       }, {
         name: 'port',
         message: '服务端口号：'
-      }]).then(async (answers) => {
-
-        let cmdStr = `git clone ${answers.gitrepo} ${objName} && cd ./${objName} && npm i && pm2 startOrReload pm2.json && pm2 save && pm2 startup`;
+      }]).then(async(answers) => {
+        const cmdStr = `git clone ${answers.gitrepo} ${objName} && cd ./${objName} && npm i && pm2 startOrReload pm2.json && pm2 save && pm2 startup`;
         await this.exec(cmdStr);
-        const nks = new nunjucks();
-        if (answers.https.toLowerCase() === 'n') { //不需要https
+        const nks = new Nunjucks();
+        if (answers.https.toLowerCase() === 'n') { // 不需要https
           let domainWww = false;
           if (answers.domain.indexOf('www.') > -1) {
             domainWww = 'www.' + answers.domain.split('www.')[1].split(' ')[0];
@@ -101,18 +99,18 @@ module.exports = class {
             root: path.resolve('./' + objName),
             domainWww
           }, path.resolve('/etc/nginx/conf.d/' + objName + '.conf'));
-          let cmdStr = `nginx -s reload`;
+          const cmdStr = `nginx -s reload`;
           await this.exec(cmdStr);
         } else if (answers.https.toLowerCase() === 'y') {
-          //生成证书
+          // 生成证书
           await nks.render(path.resolve(__dirname, '../template/nginx/https-config.conf'), {
-            domain: answers.domain,
+            domain: answers.domain
           }, path.resolve('/etc/nginx/conf.d/' + objName + '.conf'));
           fs.outputFileSync(path.resolve('/home/ssl/' + answers.domain + '/des.t'), '生成时间：' + new Date().getTime());
           fs.outputFileSync(path.resolve('/home/autossl/test.t'), '生成时间：' + new Date().getTime());
           let cmdStr = `nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  /home/autossl/ --nginx&&~/.acme.sh/acme.sh --installcert -d ${answers.domain} --keypath /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
           await this.exec(cmdStr);
-          //https 配置 
+          // https 配置
           await nks.render(path.resolve(__dirname, '../template/nginx/https.conf'), {
             domain: answers.domain,
             port: answers.port,
@@ -141,11 +139,11 @@ module.exports = class {
       }, {
         name: 'https',
         message: '是否支持https(y/n/x)：'
-      }]).then(async (answers) => {
-        let cmdStr = `git clone ${answers.gitrepo} ${objName} && cd ./${objName}`;
+      }]).then(async(answers) => {
+        const cmdStr = `git clone ${answers.gitrepo} ${objName} && cd ./${objName}`;
         await this.exec(cmdStr);
-        const nks = new nunjucks();
-        if (answers.https.toLowerCase() === 'n') { //不需要https
+        const nks = new Nunjucks();
+        if (answers.https.toLowerCase() === 'n') { // 不需要https
           let domainWww = false;
           if (answers.domain.indexOf('www.') > -1) {
             domainWww = 'www.' + answers.domain.split('www.')[1].split(' ')[0];
@@ -155,18 +153,18 @@ module.exports = class {
             root: path.resolve('./' + objName),
             domainWww
           }, path.resolve('/etc/nginx/conf.d/' + objName + '.conf'));
-          let cmdStr = `nginx -s reload`;
+          const cmdStr = `nginx -s reload`;
           await this.exec(cmdStr);
         } else if (answers.https.toLowerCase() === 'y') {
-          //生成证书
+          // 生成证书
           await nks.render(path.resolve(__dirname, '../template/nginx-h5/https-config.conf'), {
-            domain: answers.domain,
+            domain: answers.domain
           }, path.resolve('/etc/nginx/conf.d/' + objName + '.conf'));
           fs.outputFileSync(path.resolve('/home/ssl/' + answers.domain + '/des.t'), '生成时间：' + new Date().getTime());
           fs.outputFileSync(path.resolve('/home/autossl/test.t'), '生成时间：' + new Date().getTime());
           let cmdStr = `nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  /home/autossl/ --nginx&&~/.acme.sh/acme.sh --installcert -d ${answers.domain} --keypath /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
           await this.exec(cmdStr);
-          //https 配置 
+          // https 配置
           await nks.render(path.resolve(__dirname, '../template/nginx-h5/https.conf'), {
             domain: answers.domain,
             root: path.resolve('./' + objName),
@@ -188,12 +186,12 @@ module.exports = class {
       inquirer.prompt([{
         name: 'domain',
         message: '请输入域名'
-      }]).then(async (answers) => {
+      }]).then(async(answers) => {
         const objName = 'ssl-' + new Date().getTime();
-        const nks = new nunjucks();
-        //生成证书
+        const nks = new Nunjucks();
+        // 生成证书
         await nks.render(path.resolve(__dirname, '../template/nginx-h5/https-config.conf'), {
-          domain: answers.domain,
+          domain: answers.domain
         }, path.resolve('/etc/nginx/conf.d/' + objName + '.conf'));
         fs.outputFileSync(path.resolve('/home/ssl/' + answers.domain + '/des.t'), '生成时间：' + new Date().getTime());
         fs.outputFileSync(path.resolve('/home/autossl/test.t'), '生成时间：' + new Date().getTime());
@@ -213,13 +211,14 @@ module.exports = class {
    */
   static async install(type = 'basic') {
     try {
-      const sslStr = `curl  https://get.acme.sh | sh && alias acme.sh=~/.acme.sh/acme.sh && acme.sh  --upgrade  --auto-upgrade`; //生成ssl
-      const mysqlStr = `rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm && yum -y install mysql-community-server && systemctl enable mysqld && systemctl start mysqld && mysql_secure_installation && mysql -V`;
+      const nks = new Nunjucks();
+      const sslStr = `curl  https://get.acme.sh | sh && alias acme.sh=~/.acme.sh/acme.sh && acme.sh  --upgrade  --auto-upgrade`; // 生成ssl
+      const mysqlStr = `rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm & yum -y install mysql-community-server && systemctl enable mysqld && systemctl start mysqld && mysql_secure_installation && mysql -V`;
       const nginxStr = `yum -y install nginx && sudo systemctl enable nginx && sudo systemctl start nginx && nginx -v`;
       const gitStr = `yum -y install git && git --version`;
-      const mongodbStr = `sudo yum makecache && sudo yum -y install mongodb-org &&sudo service mongod start &&sudo chkconfig mongod on`;
+      const mongodbStr = `sudo yum makecache && sudo yum -y install mongodb-org && sudo service mongod start &&sudo chkconfig mongod on`;
       const redisStr = `yum -y install redis && service redis start && redis-cli --version`;
-      const otherStr = `yum -y update gcc&&yum -y install gcc+ gcc-c++`; //c++
+      const otherStr = `yum -y update gcc&&yum -y install gcc+ gcc-c++`; // c++
       switch (type) {
         case 'ssl':
           await this.exec(sslStr);
