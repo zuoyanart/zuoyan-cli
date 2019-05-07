@@ -1,12 +1,12 @@
 {
   "name": "zuoyan-cli",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "description": "zuoyan command tools",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "zycli": "index.js"
+    "zy": "index.js"
   },
   "author": "zuoyan",
   "license": "ISC",
