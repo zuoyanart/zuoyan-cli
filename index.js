@@ -45,5 +45,12 @@ program.command('install <name>')
   .action((name) => {
     cmd.install(name);
   });
+/**
+ * 配置服务器环境
+ */
+program.command('push')
+  .action(name => {
+    cmd.gitcmd("push");
+  });
 
 program.parse(process.argv);

@@ -9,7 +9,7 @@ const logSymbols = require('log-symbols');
 module.exports = class {
   static exec(cmdstr) {
     return new Promise((resolve, reject) => {
-      shell.exec(cmdstr, function(code, stdout, stderr) {
+      shell.exec(cmdstr, function (code, stdout, stderr) {
         // console.log('stderr', stderr);
         // console.log('stdout', stdout);
         if (stderr && false) {
@@ -84,7 +84,7 @@ module.exports = class {
       }, {
         name: 'port',
         message: '服务端口号：'
-      }]).then(async(answers) => {
+      }]).then(async (answers) => {
         const cmdStr = `git clone ${answers.gitrepo} ${objName} && cd ./${objName} && npm i && pm2 startOrReload pm2.json && pm2 save && pm2 startup`;
         await this.exec(cmdStr);
         const nks = new Nunjucks();
@@ -139,7 +139,7 @@ module.exports = class {
       }, {
         name: 'https',
         message: '是否支持https(y/n/x)：'
-      }]).then(async(answers) => {
+      }]).then(async (answers) => {
         const cmdStr = `git clone ${answers.gitrepo} ${objName} && cd ./${objName}`;
         await this.exec(cmdStr);
         const nks = new Nunjucks();
@@ -186,7 +186,7 @@ module.exports = class {
       inquirer.prompt([{
         name: 'domain',
         message: '请输入域名'
-      }]).then(async(answers) => {
+      }]).then(async (answers) => {
         const objName = 'ssl-' + new Date().getTime();
         const nks = new Nunjucks();
         // 生成证书
@@ -253,5 +253,23 @@ module.exports = class {
     } catch (e) {
       console.log(logSymbols.error, chalk.red(e.message));
     }
+  }
+  /**
+   * git 命令封装
+   * @param {} op 
+   * @param {*} msg 
+   */
+  static async gitcmd(op = 'push') {
+    switch (op) {
+      case 'push':
+        inquirer.prompt([{
+          name: 'msg',
+          message: '请输入msg'
+        }]).then(async (answers) => {
+          await this.exec('git add -A && git commit -m "' + (answers.msg || 'fixbug') + '" && git push');
+        });
+        break;
+    }
+
   }
 };
