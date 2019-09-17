@@ -1,4 +1,7 @@
 ### 命令行工具
+```js
+yum install epel-release && yum install nodejs && yum install npm && npm install n -g && n  latest && npm install pm2 -g
+```
 * 初始化项目模板
   > api template
   >
