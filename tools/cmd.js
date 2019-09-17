@@ -8,20 +8,7 @@ const logSymbols = require('log-symbols');
 
 module.exports = class {
   static exec(cmdstr) {
-    return new Promise((resolve, reject) => {
-      shell.exec(cmdstr, function (code, stdout, stderr) {
-        // console.log('stderr', stderr);
-        // console.log('stdout', stdout);
-        if (stderr && false) {
-          return reject(new Error(stderr));
-        }
-        // console.log('asd', stdout);
-        resolve(stdout);
-        // console.log('Exit code:', code);
-        // console.log('Program output:', stdout);
-        // console.log('Program stderr:', stderr);
-      });
-    });
+    shell.exec(cmdstr);
   }
   /**
    *  初始化api项目
@@ -36,7 +23,7 @@ module.exports = class {
     // const spinner = ora('downloading...\n');
     // spinner.start();
     try {
-      const cmd = `git clone https://git.zuoyanit.com/zuoyanit/template-api.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
+      const cmd = `git clone http://git.zuoyanit.com/zuoyanit/template-api-Permission.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
       await this.exec(cmd);
       // spinner.succeed();
       console.log(logSymbols.success, chalk.green('Create project success. please run <npm i> in project directory.'));
@@ -58,7 +45,7 @@ module.exports = class {
     // const spinner = ora('downloading...\n');
     // spinner.start();
     try {
-      const cmd = `git clone https://git.zuoyanit.com/zuoyanit/template-cms.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
+      const cmd = `git clone https://git.zuoyanit.com/zuoyanit/template-manage.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
       await this.exec(cmd);
       // spinner.succeed();
       console.log(logSymbols.success, chalk.green('Create project success. please run <npm i> in project directory.'));
@@ -84,7 +71,7 @@ module.exports = class {
       }, {
         name: 'port',
         message: '服务端口号：'
-      }]).then(async (answers) => {
+      }]).then(async(answers) => {
         const cmdStr = `git clone ${answers.gitrepo} ${objName} && cd ./${objName} && npm i && pm2 startOrReload pm2.json && pm2 save && pm2 startup`;
         await this.exec(cmdStr);
         const nks = new Nunjucks();
@@ -139,7 +126,7 @@ module.exports = class {
       }, {
         name: 'https',
         message: '是否支持https(y/n/x)：'
-      }]).then(async (answers) => {
+      }]).then(async(answers) => {
         const cmdStr = `git clone ${answers.gitrepo} ${objName} && cd ./${objName}`;
         await this.exec(cmdStr);
         const nks = new Nunjucks();
@@ -186,7 +173,7 @@ module.exports = class {
       inquirer.prompt([{
         name: 'domain',
         message: '请输入域名'
-      }]).then(async (answers) => {
+      }]).then(async(answers) => {
         const objName = 'ssl-' + new Date().getTime();
         const nks = new Nunjucks();
         // 生成证书
@@ -256,8 +243,8 @@ module.exports = class {
   }
   /**
    * git 命令封装
-   * @param {} op 
-   * @param {*} msg 
+   * @param {} op
+   * @param {*} msg
    */
   static async gitcmd(op = 'push') {
     switch (op) {
@@ -265,11 +252,10 @@ module.exports = class {
         inquirer.prompt([{
           name: 'msg',
           message: '请输入msg'
-        }]).then(async (answers) => {
+        }]).then(async(answers) => {
           await this.exec('git add -A && git commit -m "' + (answers.msg || 'fixbug') + '" && git push');
         });
         break;
     }
-
   }
 };
