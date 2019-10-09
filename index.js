@@ -3,8 +3,9 @@
 const program = require('commander');
 const cmd = require('./tools/cmd');
 
-program.version('1.1.3', '-v, --version')
+program.version('1.1.4', '-v, --version')
   .command('template <name>')
+  .alias('t')
   .description('generate api template')
   .action((name) => {
     cmd.templateApi(name);
@@ -14,6 +15,7 @@ program.version('1.1.3', '-v, --version')
  * 部署git协议的项目
  */
 program.command('templateManage <name>')
+  .alias('tm')
   .description('generate front end template')
   .action((name) => {
     cmd.templateManage(name);
@@ -23,6 +25,7 @@ program.command('templateManage <name>')
  * 部署git协议的项目
  */
 program.command('templateTask <name>')
+  .alias('tt')
   .description('generate task template')
   .action((name) => {
     cmd.templateTask(name);
@@ -32,6 +35,7 @@ program.command('templateTask <name>')
  * 部署git协议的项目
  */
 program.command('depolyapp <name>')
+  .alias('d')
   .description('depoly server program')
   .action((name) => {
     cmd.depoly(name);
@@ -40,6 +44,7 @@ program.command('depolyapp <name>')
  * 部署git协议的项目
  */
 program.command('depolyh5 <name>')
+  .alias('df')
   .description('depoly front end program')
   .action((name) => {
     cmd.depolyH5(name);
@@ -56,6 +61,7 @@ program.command('ressl')
  * 配置服务器环境
  */
 program.command('install <name>')
+  .alias('i')
   .description('在centos上安装组件')
   .action((name) => {
     cmd.install(name);
@@ -64,6 +70,7 @@ program.command('install <name>')
  * 配置服务器环境
  */
 program.command('push')
+  .alias('p')
   .description('git的push命令封装，add,commit,push')
   .action(name => {
     cmd.gitcmd('push');
