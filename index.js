@@ -3,7 +3,7 @@
 const program = require('commander');
 const cmd = require('./tools/cmd');
 
-program.version('1.1.4', '-v, --version')
+program.version('1.1.5', '-v, --version')
   .command('template <name>')
   .alias('t')
   .description('generate api template')
@@ -62,7 +62,7 @@ program.command('ressl')
  */
 program.command('install <name>')
   .alias('i')
-  .description('在centos上安装组件')
+  .description('在centos上安装组件,ssl,mysql,nginx,git,mongodb,redis,basic(ssl,mysql,nginx,git,other),other')
   .action((name) => {
     cmd.install(name);
   });
