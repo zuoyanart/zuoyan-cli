@@ -26,10 +26,10 @@ module.exports = class {
     }
   }
   /**
-   *  初始化api项目
+   *  初始化前端项目
    * @param {*} objName
    */
-  static async templateCmsApi(objName) {
+  static async templateManage(objName) {
     if (fs.existsSync(objName)) {
       console.log(logSymbols.error, chalk.red('The project directory already exists!'));
       return;
@@ -37,6 +37,25 @@ module.exports = class {
     console.log(chalk.green('Start creating projects...'));
     try {
       const cmd = `git clone https://git.zuoyanit.com/zuoyanit/template-manage.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
+      shell.exec(cmd);
+      console.log(logSymbols.success, chalk.green('Create project success. please run <npm i> in project directory.'));
+    } catch (e) {
+      console.log(logSymbols.error, chalk.red(e.message));
+    }
+  }
+
+  /**
+   *  初始化前端项目
+   * @param {*} objName
+   */
+  static async templateTask(objName) {
+    if (fs.existsSync(objName)) {
+      console.log(logSymbols.error, chalk.red('The project directory already exists!'));
+      return;
+    }
+    console.log(chalk.green('Start creating projects...'));
+    try {
+      const cmd = `git clone https://git.zuoyanit.com/zuoyanit/template-task.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
       shell.exec(cmd);
       console.log(logSymbols.success, chalk.green('Create project success. please run <npm i> in project directory.'));
     } catch (e) {
