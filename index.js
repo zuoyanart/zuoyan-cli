@@ -2,6 +2,7 @@
 
 const program = require('commander');
 const cmd = require('./tools/cmd');
+const safe = require('./tools/safe.js');
 
 program.version('1.1.5', '-v, --version')
   .command('template <name>')
@@ -74,6 +75,16 @@ program.command('push')
   .description('git的push命令封装，add,commit,push')
   .action(name => {
     cmd.gitcmd('push');
+  });
+
+/**
+ * 配置服务器环境
+ */
+program.command('safeServer')
+  .alias('ss')
+  .description('加密thinkjs项目代码')
+  .action(name => {
+    safe.thinkjs();
   });
 
 program.parse(process.argv);
