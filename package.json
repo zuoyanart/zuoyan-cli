@@ -11,6 +11,7 @@
   "author": "zuoyan",
   "license": "ISC",
   "dependencies": {
+    "bytenode": "^1.1.2",
     "chalk": "^2.4.1",
     "commander": "^2.18.0",
     "fs-extra": "^7.0.0",

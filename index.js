@@ -84,7 +84,8 @@ program.command('safeServer')
   .alias('ss')
   .description('加密thinkjs项目代码')
   .action(name => {
-    safe.thinkjs();
+    const s = new safe();
+    s.thinkjs();
   });
 
 program.parse(process.argv);
