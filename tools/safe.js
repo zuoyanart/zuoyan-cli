@@ -1,4 +1,3 @@
-const shell = require('shelljs');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
 const fs = require('fs-extra');
@@ -6,13 +5,13 @@ const path = require('path');
 const logSymbols = require('log-symbols');
 const os = require('os');
 const bytenode = require('bytenode');
-const JavaScriptObfuscator = require('javascript-obfuscator');
+// const JavaScriptObfuscator = require('javascript-obfuscator');
 
 module.exports = class {
   /**
-   * thinkjs 项目加密
+   * 格式化thinkjs 项目
    */
-  thinkjs() {
+  thinkjsFormat() {
     // 更改think-loader方法
     const exePath = process.cwd();
     // 更新loader可以加载jsc文件
@@ -20,18 +19,67 @@ module.exports = class {
     let thinkLoader = fs.readFileSync(thinkLoaderPath).toString();
     thinkLoader = thinkLoader.replace(/\/\\\.js\$\//g, '/\\.(js|jsc)$/');
     fs.writeFileSync(thinkLoaderPath, thinkLoader);
-    /// 更新router loader，可以加载router.jsc
-    // const thinkLoaderRouterPath = path.join(exePath, '/node_modules/think-loader/loader/router.js');
-    // thinkLoader = fs.readFileSync(thinkLoaderRouterPath).toString();
-    // if (thinkLoader.indexOf('.jsc') === -1) {
-    //   thinkLoader = thinkLoader.replace(/router\.js/g, 'router.jsc');
-    //   fs.writeFileSync(thinkLoaderRouterPath, thinkLoader);
-    // }
+    // 更新router loader，可以加载router.jsc
+    const thinkLoaderRouterPath = path.join(exePath, '/node_modules/think-loader/loader/router.js');
+    thinkLoader = fs.readFileSync(thinkLoaderRouterPath).toString();
+    if (thinkLoader.indexOf('.jsc') === -1) {
+      thinkLoader = thinkLoader.replace(/router\.js/g, 'router.jsc');
+      fs.writeFileSync(thinkLoaderRouterPath, thinkLoader);
+    }
+    // 更新devlopment.js
+    const thinkDevPath = path.join(exePath, '/development.js');
+    thinkLoader = fs.readFileSync(thinkDevPath).toString();
+    if (thinkLoader.indexOf('bytenode') === -1) {
+      thinkLoader = "require('bytenode');" + thinkLoader;
+      fs.writeFileSync(thinkDevPath, thinkLoader);
+    }
+    // 更新production.js
+    const thinkProPath = path.join(exePath, '/production.js');
+    thinkLoader = fs.readFileSync(thinkProPath).toString();
+    if (thinkLoader.indexOf('bytenode') === -1) {
+      thinkLoader = "require('bytenode');" + thinkLoader;
+      fs.writeFileSync(thinkProPath, thinkLoader);
+    }
+  }
+  /**
+   * thinkjs 项目加密
+   */
+  thinkjs() {
+    console.log(logSymbols.error, chalk.red('nodejs版本必须为10.15.x，现测试12.x和13.x存在undefined问题'));
+    // 更改think-loader方法
+    const exePath = process.cwd();
+    // 更新loader可以加载jsc文件
+    const thinkLoaderPath = path.join(exePath, '/node_modules/think-loader/loader/common.js');
+    let thinkLoader = fs.readFileSync(thinkLoaderPath).toString();
+    thinkLoader = thinkLoader.replace(/\/\\\.js\$\//g, '/\\.(js|jsc)$/');
+    fs.writeFileSync(thinkLoaderPath, thinkLoader);
+    // 更新router loader，可以加载router.jsc
+    const thinkLoaderRouterPath = path.join(exePath, '/node_modules/think-loader/loader/router.js');
+    thinkLoader = fs.readFileSync(thinkLoaderRouterPath).toString();
+    if (thinkLoader.indexOf('.jsc') === -1) {
+      thinkLoader = thinkLoader.replace(/router\.js/g, 'router.jsc');
+      fs.writeFileSync(thinkLoaderRouterPath, thinkLoader);
+    }
+    // 更新devlopment.js
+    const thinkDevPath = path.join(exePath, '/development.js');
+    thinkLoader = fs.readFileSync(thinkDevPath).toString();
+    if (thinkLoader.indexOf('bytenode') === -1) {
+      thinkLoader = "require('bytenode');" + thinkLoader;
+      fs.writeFileSync(thinkDevPath, thinkLoader);
+    }
+    // 更新production.js
+    const thinkProPath = path.join(exePath, '/production.js');
+    thinkLoader = fs.readFileSync(thinkProPath).toString();
+    if (thinkLoader.indexOf('bytenode') === -1) {
+      thinkLoader = "require('bytenode');" + thinkLoader;
+      fs.writeFileSync(thinkProPath, thinkLoader);
+    }
 
     const srcPath = path.join(exePath, '/src');
     const srcModel = fs.readdirSync(srcPath);
 
     for (let i = 0, len = srcModel.length; i < len; i++) {
+      console.log(chalk.green('开始编译：' + srcModel[i]));
       if (srcModel[i] !== 'common11') {
         const fileList = this._findAllFile(path.join(srcPath, '/' + srcModel[i]));
         for (let j = 0, jlen = fileList.length; j < jlen; j++) {
@@ -84,7 +132,7 @@ module.exports = class {
       var stat = fs.statSync(file);
       if (stat && stat.isDirectory()) {
         results = results.concat(this._findAllFile(file));
-      } else if (file.endsWith('.js') && file.indexOf('config/config.') === -1 && file.indexOf('config/adapter.') === -1 && file.indexOf('config/extend') === -1 && file.indexOf('middleware.js') === -1 && file.indexOf('validator.js') === -1 && file.indexOf('common/extend') === -1 && file.indexOf('router') === -1 && file.indexOf('model2') === -1 && file.indexOf('logic2') === -1) {
+      } else if (file.endsWith('.js') && file.indexOf('config/config.') === -1 && file.indexOf('config/adapter.') === -1 && file.indexOf('config/extend') === -1 && file.indexOf('middleware.js') === -1 && file.indexOf('validator.js') === -1 && file.indexOf('common/extend') === -1) {
         results.push(file);
       }
     });

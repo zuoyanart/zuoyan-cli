@@ -2,7 +2,7 @@
 
 const program = require('commander');
 const cmd = require('./tools/cmd');
-const safe = require('./tools/safe.js');
+const Safe = require('./tools/safe.js');
 
 program.version('1.1.5', '-v, --version')
   .command('template <name>')
@@ -78,14 +78,25 @@ program.command('push')
   });
 
 /**
- * 配置服务器环境
+ * thinkjs项目加密
  */
 program.command('safeServer')
   .alias('ss')
   .description('加密thinkjs项目代码')
   .action(name => {
-    const s = new safe();
+    const s = new Safe();
     s.thinkjs();
+  });
+
+/**
+ * 配置服务器环境
+ */
+program.command('safeFormatServer')
+  .alias('ssf')
+  .description('格式化加密的thinkjs项目代码')
+  .action(name => {
+    const s = new Safe();
+    s.thinkjsFormat();
   });
 
 program.parse(process.argv);
