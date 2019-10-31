@@ -3,6 +3,7 @@
 const program = require('commander');
 const cmd = require('./tools/cmd');
 const Safe = require('./tools/safe.js');
+const SafeTask = require('./tools/safeTask.js');
 
 program.version('1.1.5', '-v, --version')
   .command('template <name>')
@@ -97,6 +98,17 @@ program.command('safeFormatServer')
   .action(name => {
     const s = new Safe();
     s.thinkjsFormat();
+  });
+
+/**
+ * task项目加密
+ */
+program.command('safeTask')
+  .alias('st')
+  .description('加密task项目代码')
+  .action(name => {
+    const s = new SafeTask();
+    s.task();
   });
 
 program.parse(process.argv);

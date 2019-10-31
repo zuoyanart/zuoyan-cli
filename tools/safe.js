@@ -1,3 +1,4 @@
+const shelljs = require('shelljs');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
 const fs = require('fs-extra');
@@ -46,6 +47,7 @@ module.exports = class {
    */
   thinkjs() {
     console.log(logSymbols.error, chalk.red('nodejs版本必须为10.15.x，现测试12.x和13.x存在undefined问题'));
+    shelljs.exec('npm i bytenode');
     // 更改think-loader方法
     const exePath = process.cwd();
     // 更新loader可以加载jsc文件
