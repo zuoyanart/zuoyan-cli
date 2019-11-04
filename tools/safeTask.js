@@ -53,8 +53,8 @@ module.exports = class {
       fs.writeFileSync(thinkProPath, thinkLoader);
     }
 
-    const srcPath = path.join(exePath, '/');
-    const srcModel = ['common', 'model', 'service', 'tools', 'app.js', 'index.js']; // fs.readdirSync(srcPath);
+    const srcPath = path.join(exePath, '/src');
+    const srcModel = fs.readdirSync(srcPath);
 
     for (let i = 0, len = srcModel.length; i < len; i++) {
       console.log(chalk.green('开始编译：' + srcModel[i]));
@@ -98,7 +98,10 @@ module.exports = class {
     let results = [];
     const stat = fs.statSync(dir);
     if (stat && stat.isFile()) {
-      results.push(dir);
+      if (dir.endsWith('.js')) {
+        results.push(dir);
+        return results;
+      }
       return results;
     }
     const list = fs.readdirSync(dir);
@@ -107,7 +110,7 @@ module.exports = class {
       const stat = fs.statSync(file);
       if (stat && stat.isDirectory()) {
         results = results.concat(this._findAllFile(file));
-      } else if (file.endsWith('.js')) {
+      } else if (file.endsWith('.js') && file.indexOf('config/') === -1) {
         results.push(file);
       }
     });
