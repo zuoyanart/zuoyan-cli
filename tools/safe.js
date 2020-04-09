@@ -18,7 +18,9 @@ module.exports = class {
     // 更新loader可以加载jsc文件
     const thinkLoaderPath = path.join(exePath, '/node_modules/think-loader/loader/common.js');
     let thinkLoader = fs.readFileSync(thinkLoaderPath).toString();
+    thinkLoader = thinkLoader.replace(/\+\\\.js\$\//g, '+\\.(js|jsc)$/');
     thinkLoader = thinkLoader.replace(/\/\\\.js\$\//g, '/\\.(js|jsc)$/');
+
     fs.writeFileSync(thinkLoaderPath, thinkLoader);
     // 更新router loader，可以加载router.jsc
     const thinkLoaderRouterPath = path.join(exePath, '/node_modules/think-loader/loader/router.js');
@@ -46,13 +48,13 @@ module.exports = class {
    * thinkjs 项目加密
    */
   thinkjs() {
-    console.log(logSymbols.error, chalk.red('nodejs版本必须为10.15.x，现测试12.x和13.x存在undefined问题'));
     shelljs.exec('npm i bytenode');
     // 更改think-loader方法
     const exePath = process.cwd();
     // 更新loader可以加载jsc文件
     const thinkLoaderPath = path.join(exePath, '/node_modules/think-loader/loader/common.js');
     let thinkLoader = fs.readFileSync(thinkLoaderPath).toString();
+    thinkLoader = thinkLoader.replace(/\+\\\.js\$\//g, '+\\.(js|jsc)$/');
     thinkLoader = thinkLoader.replace(/\/\\\.js\$\//g, '/\\.(js|jsc)$/');
     fs.writeFileSync(thinkLoaderPath, thinkLoader);
     // 更新router loader，可以加载router.jsc

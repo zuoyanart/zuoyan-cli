@@ -80,6 +80,7 @@ module.exports = class {
         name: 'port',
         message: '服务端口号：'
       }]).then(async(answers) => {
+        const exePath = process.cwd();
         const cmdStr = `git clone ${answers.gitrepo} ${objName} && cd ./${objName} && npm i && pm2 startOrReload pm2.json && pm2 save && pm2 startup`;
         shell.exec(cmdStr);
         const nks = new Nunjucks();
