@@ -79,10 +79,12 @@ module.exports = class {
       }, {
         name: 'port',
         message: '服务端口号：'
-      }]).then(async(answers) => {
-        const exePath = process.cwd();
+      }]).then(async (answers) => {
+        let exePath = process.cwd();
         const cmdStr = `git clone ${answers.gitrepo} ${objName} && cd ./${objName} && npm i && pm2 startOrReload pm2.json && pm2 save && pm2 startup`;
         shell.exec(cmdStr);
+        exePath = exePath + '/' + objName;// 当前项目的目录， webroot
+
         const nks = new Nunjucks();
         if (answers.https.toLowerCase() === 'n') { // 不需要https
           let domainWww = false;
@@ -103,9 +105,11 @@ module.exports = class {
             domain: answers.domain
           }, path.resolve('/etc/nginx/conf.d/' + objName + '.conf'));
           fs.outputFileSync(path.resolve('/home/ssl/' + answers.domain + '/des.t'), '生成时间：' + new Date().getTime());
-          fs.outputFileSync(path.resolve('/home/autossl/test.t'), '生成时间：' + new Date().getTime());
-          let cmdStr = `nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  /home/autossl/ --nginx&&~/.acme.sh/acme.sh --installcert -d ${answers.domain} --keypath /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
+          // fs.outputFileSync(path.resolve('/home/autossl/test.t'), '生成时间：' + new Date().getTime());
+
+          let cmdStr = `nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  ${exePath} --nginx&&~/.acme.sh/acme.sh --installcert -d ${answers.domain} --keypath /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
           shell.exec(cmdStr);
+          shell.exec('git reset --hard HEAD');
           // https 配置
           await nks.render(path.resolve(__dirname, '../template/nginx/https.conf'), {
             domain: answers.domain,
@@ -135,9 +139,12 @@ module.exports = class {
       }, {
         name: 'https',
         message: '是否支持https(y/n/x)：'
-      }]).then(async(answers) => {
+      }]).then(async (answers) => {
+        let exePath = process.cwd();
         const cmdStr = `git clone ${answers.gitrepo} ${objName} && cd ./${objName}`;
         shell.exec(cmdStr);
+        exePath = exePath + '/' + objName;
+
         const nks = new Nunjucks();
         if (answers.https.toLowerCase() === 'n') { // 不需要https
           let domainWww = false;
@@ -156,10 +163,17 @@ module.exports = class {
           await nks.render(path.resolve(__dirname, '../template/nginx-h5/https-config.conf'), {
             domain: answers.domain
           }, path.resolve('/etc/nginx/conf.d/' + objName + '.conf'));
+
           fs.outputFileSync(path.resolve('/home/ssl/' + answers.domain + '/des.t'), '生成时间：' + new Date().getTime());
-          fs.outputFileSync(path.resolve('/home/autossl/test.t'), '生成时间：' + new Date().getTime());
-          let cmdStr = `nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  /home/autossl/ --nginx&&~/.acme.sh/acme.sh --installcert -d ${answers.domain} --keypath /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
+          // fs.outputFileSync(path.resolve('/home/autossl/test.t'), '生成时间：' + new Date().getTime());
+
+          // 当前所在目录
+
+          let cmdStr = `nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  ${exePath} --nginx&&~/.acme.sh/acme.sh --installcert -d ${answers.domain} --keypath /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
+
           shell.exec(cmdStr);
+          // 重置ssl造成的文件历史变更
+          shell.exec('git reset --hard HEAD');
           // https 配置
           await nks.render(path.resolve(__dirname, '../template/nginx-h5/https.conf'), {
             domain: answers.domain,
@@ -182,7 +196,7 @@ module.exports = class {
       inquirer.prompt([{
         name: 'domain',
         message: '请输入域名'
-      }]).then(async(answers) => {
+      }]).then(async (answers) => {
         const objName = 'ssl-' + new Date().getTime();
         const nks = new Nunjucks();
         // 生成证书
@@ -261,7 +275,7 @@ module.exports = class {
         inquirer.prompt([{
           name: 'msg',
           message: '请输入msg'
-        }]).then(async(answers) => {
+        }]).then(async (answers) => {
           shell.exec('git add -A && git commit -m "' + (answers.msg || 'fixbug') + '" && git push');
         });
         break;
