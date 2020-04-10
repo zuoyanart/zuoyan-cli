@@ -34,7 +34,6 @@ module.exports = class {
    * task 项目加密
    */
   task() {
-    console.log(logSymbols.error, chalk.red('nodejs版本必须为10.15.x，现测试12.x和13.x存在undefined问题'));
     shelljs.exec('npm i bytenode');
     // 更改think-loader方法
     const exePath = process.cwd();
