@@ -5,7 +5,7 @@ const cmd = require('./tools/cmd');
 const Safe = require('./tools/safe.js');
 const SafeTask = require('./tools/safeTask.js');
 
-program.version('1.1.5', '-v, --version')
+program.version('1.2.0', '-v, --version')
   .command('template <name>')
   .alias('t')
   .description('generate api template')

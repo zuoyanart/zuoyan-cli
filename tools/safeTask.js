@@ -1,9 +1,7 @@
 const shelljs = require('shelljs');
 const chalk = require('chalk');
-const inquirer = require('inquirer');
 const fs = require('fs-extra');
 const path = require('path');
-const logSymbols = require('log-symbols');
 const os = require('os');
 const bytenode = require('bytenode');
 // const JavaScriptObfuscator = require('javascript-obfuscator');
