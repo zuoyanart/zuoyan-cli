@@ -12,16 +12,16 @@
   "license": "ISC",
   "dependencies": {
     "bytenode": "^1.1.6",
-    "chalk": "^4.0.0",
-    "commander": "^5.1.0",
-    "fs-extra": "^9.0.0",
+    "chalk": "^4.1.0",
+    "commander": "^6.0.0",
+    "fs-extra": "^9.0.1",
     "handlebars": "^4.7.6",
-    "inquirer": "^7.1.0",
+    "inquirer": "^7.3.3",
     "log-symbols": "^4.0.0",
-    "nunjucks": "^3.2.1",
-    "ora": "^4.0.4",
+    "nunjucks": "^3.2.2",
+    "ora": "^4.0.5",
     "shelljs": "^0.8.4",
-    "javascript-obfuscator": "^0.28.0"
+    "javascript-obfuscator": "^1.8.1"
   },
   "devDependencies": {}
 }
