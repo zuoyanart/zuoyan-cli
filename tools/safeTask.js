@@ -107,7 +107,7 @@ module.exports = class {
       const stat = fs.statSync(file);
       if (stat && stat.isDirectory()) {
         results = results.concat(this._findAllFile(file));
-      } else if (file.endsWith('.js') && file.indexOf('config/') >= -1) {
+      } else if (file.endsWith('.js') && file.indexOf('config/') === -1) {
         results.push(file);
       }
     });

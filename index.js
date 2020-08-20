@@ -4,6 +4,7 @@ const program = require('commander');
 const cmd = require('./tools/cmd');
 const Safe = require('./tools/safe.js');
 const SafeTask = require('./tools/safeTask.js');
+const SafeAndoridTask = require('./tools/safeAndroidTask.js');
 
 program.version('1.2.0', '-v, --version')
   .command('template <name>')
@@ -108,6 +109,17 @@ program.command('safeTask')
   .description('加密task项目代码')
   .action(name => {
     const s = new SafeTask();
+    s.task();
+  });
+
+/**
+ * task项目加密
+ */
+program.command('safeAndroidTask')
+  .alias('sat')
+  .description('加密安卓task项目代码')
+  .action(name => {
+    const s = new SafeAndoridTask();
     s.task();
   });
 
