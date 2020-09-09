@@ -102,14 +102,14 @@ module.exports = class {
         } else if (answers.https.toLowerCase() === 'y') {
           // 生成证书
           await nks.render(path.resolve(__dirname, '../template/nginx/https-config.conf'), {
-            domain: answers.domain
+            domain: answers.domain,
+            exePath: exePath + '/www'
           }, path.resolve('/etc/nginx/conf.d/' + objName + '.conf'));
           fs.outputFileSync(path.resolve('/home/ssl/' + answers.domain + '/des.t'), '生成时间：' + new Date().getTime());
-          // fs.outputFileSync(path.resolve('/home/autossl/test.t'), '生成时间：' + new Date().getTime());
 
-          let cmdStr = `nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  ${exePath}+'/www' --nginx&&~/.acme.sh/acme.sh --installcert -d ${answers.domain} --keypath /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
+          let cmdStr = `nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  ${exePath}/www --nginx&&~/.acme.sh/acme.sh --install-cert -d ${answers.domain} --key-file /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
           shell.exec(cmdStr);
-          shell.exec('git reset --hard HEAD');
+          // shell.exec('git reset --hard HEAD');
           // https 配置
           await nks.render(path.resolve(__dirname, '../template/nginx/https.conf'), {
             domain: answers.domain,
@@ -161,7 +161,8 @@ module.exports = class {
         } else if (answers.https.toLowerCase() === 'y') {
           // 生成证书
           await nks.render(path.resolve(__dirname, '../template/nginx-h5/https-config.conf'), {
-            domain: answers.domain
+            domain: answers.domain,
+            exePath: exePath + '/dist'
           }, path.resolve('/etc/nginx/conf.d/' + objName + '.conf'));
 
           fs.outputFileSync(path.resolve('/home/ssl/' + answers.domain + '/des.t'), '生成时间：' + new Date().getTime());
@@ -169,11 +170,11 @@ module.exports = class {
 
           // 当前所在目录
 
-          let cmdStr = `nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  ${exePath} --nginx&&~/.acme.sh/acme.sh --installcert -d ${answers.domain} --keypath /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
+          let cmdStr = `nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  ${exePath}/dist --nginx&&~/.acme.sh/acme.sh --install-cert -d ${answers.domain} --key-file /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
 
           shell.exec(cmdStr);
           // 重置ssl造成的文件历史变更
-          shell.exec('git reset --hard HEAD');
+          // shell.exec('git reset --hard HEAD');
           // https 配置
           await nks.render(path.resolve(__dirname, '../template/nginx-h5/https.conf'), {
             domain: answers.domain,
