@@ -83,7 +83,7 @@ module.exports = class {
         let exePath = process.cwd();
         const cmdStr = `git clone ${answers.gitrepo} ${objName} && cd ./${objName} && npm i && pm2 startOrReload pm2.json && pm2 save && pm2 startup`;
         shell.exec(cmdStr);
-        exePath = exePath + '/' + objName;// 当前项目的目录， webroot
+        exePath = exePath + '/' + objName; // 当前项目的目录， webroot
 
         const nks = new Nunjucks();
         if (answers.https.toLowerCase() === 'n') { // 不需要https
@@ -107,7 +107,7 @@ module.exports = class {
           fs.outputFileSync(path.resolve('/home/ssl/' + answers.domain + '/des.t'), '生成时间：' + new Date().getTime());
           // fs.outputFileSync(path.resolve('/home/autossl/test.t'), '生成时间：' + new Date().getTime());
 
-          let cmdStr = `nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  ${exePath} --nginx&&~/.acme.sh/acme.sh --installcert -d ${answers.domain} --keypath /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
+          let cmdStr = `nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  ${exePath}+'/www' --nginx&&~/.acme.sh/acme.sh --installcert -d ${answers.domain} --keypath /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
           shell.exec(cmdStr);
           shell.exec('git reset --hard HEAD');
           // https 配置
