@@ -194,6 +194,7 @@ module.exports = class {
    */
   static async ressl() {
     try {
+      let exePath = process.cwd();
       inquirer.prompt([{
         name: 'domain',
         message: '请输入域名'
@@ -202,12 +203,13 @@ module.exports = class {
         const nks = new Nunjucks();
         // 生成证书
         await nks.render(path.resolve(__dirname, '../template/nginx-h5/https-config.conf'), {
-          domain: answers.domain
+          domain: answers.domain,
+          exePath
         }, path.resolve('/etc/nginx/conf.d/' + objName + '.conf'));
         fs.outputFileSync(path.resolve('/home/ssl/' + answers.domain + '/des.t'), '生成时间：' + new Date().getTime());
         fs.outputFileSync(path.resolve('/home/autossl/test.t'), '生成时间：' + new Date().getTime());
 
-        let cmdStr = `rm -rf /root/.acme.sh/${answers.domain} && nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  /home/autossl/ --nginx&&~/.acme.sh/acme.sh --installcert -d ${answers.domain} --keypath /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
+        let cmdStr = `rm -rf /root/.acme.sh/${answers.domain} && nginx -s reload&&~/.acme.sh/acme.sh  --issue  -d ${answers.domain} --webroot  ${exePath} --nginx&&~/.acme.sh/acme.sh --installcert -d ${answers.domain} --keypath /home/ssl/${answers.domain}/${answers.domain}.key --fullchain-file /home/ssl/${answers.domain}/${answers.domain}-ca-bundle.cer`;
         shell.exec(cmdStr);
         console.log(logSymbols.success, chalk.green('ssl directory:/home/ssl/' + answers.domain + '/'));
         cmdStr = `rm -if /etc/nginx/conf.d/${objName}.conf && nginx -s reload`;
