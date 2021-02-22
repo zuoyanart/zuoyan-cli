@@ -230,7 +230,7 @@ module.exports = class {
       const nginxStr = `yum -y install nginx && sudo systemctl enable nginx && sudo systemctl start nginx && nginx -v`;
       const gitStr = `yum -y install git && git --version`;
       const mongodbStr = `sudo yum makecache && sudo yum -y install mongodb-org && sudo service mongod start &&sudo chkconfig mongod on`;
-      const redisStr = `yum -y install redis && service redis start && redis-cli --version`;
+      const redisStr = `yum -y install redis && sudo systemctl enable redis && service redis start && redis-cli --version`;
       const otherStr = `yum -y update gcc&&yum -y install gcc+ gcc-c++`; // c++
       switch (type) {
         case 'ssl':
