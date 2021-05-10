@@ -18,7 +18,7 @@ module.exports = class {
     }
     console.log(chalk.green('Start creating projects...'));
     try {
-      const cmd = `git clone http://git.zuoyanit.com/zuoyanit/template-api-Permission.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
+      const cmd = `git clone https://gitee.com/zuoyanit/template-api-Permission.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
       shell.exec(cmd);
       console.log(logSymbols.success, chalk.green('Create project success. please run <npm i> in project directory.'));
     } catch (e) {
@@ -36,7 +36,7 @@ module.exports = class {
     }
     console.log(chalk.green('Start creating projects...'));
     try {
-      const cmd = `git clone https://git.zuoyanit.com/zuoyanit/template-manage.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
+      const cmd = `git clone https://gitee.com/zuoyanit/template-manage.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
       shell.exec(cmd);
       console.log(logSymbols.success, chalk.green('Create project success. please run <npm i> in project directory.'));
     } catch (e) {
@@ -55,7 +55,7 @@ module.exports = class {
     }
     console.log(chalk.green('Start creating projects...'));
     try {
-      const cmd = `git clone https://git.zuoyanit.com/zuoyanit/template-task.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
+      const cmd = `git clone https://gitee.com/zuoyanit/template-task.git ${objName} && cd ./${objName} &&  rm -ifr .git`;
       shell.exec(cmd);
       console.log(logSymbols.success, chalk.green('Create project success. please run <npm i> in project directory.'));
     } catch (e) {
